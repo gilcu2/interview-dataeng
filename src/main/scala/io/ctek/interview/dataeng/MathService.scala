@@ -19,10 +19,13 @@ class MathService {
   def retrieveData: ReaderT[Try, DataEnvironment, Either[String, Set[Int]]] = Kleisli {
     (env) =>
       Try {
-        if (env.data.size == 1 && env.data.contains(0)) {
-          Left("gcd of 0 is undefined")
-        } else {
-          Right(env.data)
+        env.data.size match {
+          case 0=>
+            Left("gcd of nothing is undefined")
+          case _ if env.data.contains(0)=>
+            Left("gcd of 0 is undefined")
+          case _=>
+            Right(env.data)
         }
       }
   }
